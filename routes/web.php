@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-
 // Authentication Routes
 Route::get('/login', [App\Http\Controllers\Auth\AuthController::class, 'loginPage'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login.post');
@@ -32,5 +30,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/todos/{id}/status', [App\Http\Controllers\TodoController::class, 'updateStatus'])->name('todos.update-status');
     Route::get('/todos-statistics', [App\Http\Controllers\TodoController::class, 'statistics'])->name('todos.statistics');
 
-    
+    // Shopping Routes
+    Route::prefix('shopping')->name('shopping.')->group(function () {
+        // Listeler
+        Route::get('/',             [App\Http\Controllers\ShoppingListController::class, 'index'])->name('index');
+        Route::post('/',            [App\Http\Controllers\ShoppingListController::class, 'store'])->name('store');
+        Route::get('{shopping}',    [App\Http\Controllers\ShoppingListController::class, 'show'])->name('show');
+        Route::put('{shopping}',    [App\Http\Controllers\ShoppingListController::class, 'update'])->name('update');
+        Route::delete('{shopping}', [App\Http\Controllers\ShoppingListController::class, 'destroy'])->name('destroy');
+
+        // Ürünler
+        Route::post('{shopping}/items',     [App\Http\Controllers\ShoppingItemController::class, 'store'])->name('items.store');
+        Route::patch('items/{item}/toggle', [App\Http\Controllers\ShoppingItemController::class, 'togglePurchased'])->name('items.toggle');
+        Route::delete('items/{item}',       [App\Http\Controllers\ShoppingItemController::class, 'destroy'])->name('items.destroy');
+    });
 });
