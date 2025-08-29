@@ -33,6 +33,7 @@ class TodoController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         
+            
         return view('todos.simple-index', compact('todos'));
     }
 
